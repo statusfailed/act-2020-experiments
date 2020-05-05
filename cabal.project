@@ -1,0 +1,5 @@
+packages: .
+source-repository-package
+  type:     git
+  location: git@github.com:statusfailed/mnist-data.git
+  tag: ca72c9b3fcb33c795860a4009d9c1fb2b9bf000e
