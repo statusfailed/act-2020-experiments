@@ -14,7 +14,7 @@ You can download these using a script:
 # Build & Run
 
     cabal build
-    cabal run act2020-experiments mnist # run the iris experiment
+    cabal run act2020-experiments iris  # run the iris experiment
     cabal run act2020-experiments mnist # run the MNIST experiment
 
 # Dependencies

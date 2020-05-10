@@ -1,9 +1,10 @@
 module Main where
 
 import System.Environment
+import qualified Iris
 
 runIris :: IO ()
-runIris = putStrLn "TODO: iris"
+runIris = Iris.main
 
 runMnist :: IO ()
 runMnist = putStrLn "TODO: mnist"
