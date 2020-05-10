@@ -2,12 +2,13 @@ module Main where
 
 import System.Environment
 import qualified Iris
+import qualified MNIST
 
 runIris :: IO ()
 runIris = Iris.main
 
 runMnist :: IO ()
-runMnist = putStrLn "TODO: mnist"
+runMnist = MNIST.main
 
 main :: IO ()
 main = do

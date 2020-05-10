@@ -20,7 +20,7 @@ extra-source-files:  CHANGELOG.md
 executable act2020-experiments
   main-is:              Main.hs
   hs-source-dirs:       src
-  other-modules:        Iris
+  other-modules:        Iris, MNIST, Utils
   build-depends:        base >=4.12 && <4.13
                       , ghc-typelits-knownnat  >= 0.7.1
                       , ghc-typelits-natnormalise >= 0.7.1

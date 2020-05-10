@@ -17,6 +17,7 @@ import Data.ByteString.Lazy (ByteString(..))
 import qualified Data.ByteString.Lazy as BL
 
 import Text.Printf
+import Utils
 
 data IrisClass = Setosa | Versicolor | Virginica
   deriving(Eq, Ord, Read, Show, Enum)
@@ -66,12 +67,6 @@ binarizeWith labeller dataset =
     removeLabel (a,b,c,d,_) = [a,b,c,d]
     toLabel (_,_,_,_,y)     = labeller y
 
--- Compute the accuracy of a trained model on some data.
-accuracy :: Eq y => (x -> y) -> [(x,y)] -> Double
-accuracy trainedModel examples =
-  let dy = fmap (\(x,y) -> y == trainedModel x) examples
-  in  (fromIntegral $ length (filter id dy)) / fromIntegral (length dy)
-
 -- Split a dataset into train and test sets, using a function to get the label
 -- @c@ from an example @a@.
 splitTrainTest :: (Eq c, Ord c) => Int -> (a -> c) -> [a] -> ([a], [a])
@@ -115,7 +110,8 @@ main = do
   return ()
   where quit err = error $ "failed to load data: " ++ err
 
--- TODO: get me from RDA.
+-- NOTE: we use `rd' to brute-force compute the reverse derivative here, but a
+-- more efficient alternative is available in the RDA library.
 evalModel :: forall a b . (RDA.KnownNat a, RDA.KnownNat b) => (b*2^a + a) :-> b
 evalModel = fwd :-> rd fwd -- reverseEval @a @b
   where fwd = uncurry (eval @a @b) . split
