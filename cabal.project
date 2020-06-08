@@ -3,9 +3,9 @@ packages: .
 source-repository-package
   type:     git
   location: git@github.com:statusfailed/mnist-data.git
-  tag:      ca72c9b3fcb33c795860a4009d9c1fb2b9bf000e
+  tag:      ab76da9782f17ce118276ec0e9677dc4801cabd6
 
 source-repository-package
   type:     git
   location: git@github.com:statusfailed/rda.git
-  tag:      96940e4371b213b379248f6223c79ad3b8b95b3e
+  tag:      2a67b1bc7e50be9f232e6c6f836751854d039a9b
