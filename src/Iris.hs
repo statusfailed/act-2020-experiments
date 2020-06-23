@@ -6,6 +6,8 @@ import Control.Monad
 
 import RDA hiding (transpose) -- (BitVec(..), (:->)(..))
 import qualified RDA as RDA
+import RDA.Compositional.Structure
+
 import Data.Bits (bit, zeroBits)
 
 import Data.Function (on)
@@ -84,7 +86,7 @@ runExperiment :: forall b . KnownNat b
 runExperiment dataset labeller =
   let binaryData    = binarizeWith labeller dataset
       -- we use a 50% test, 50% train split (each class has exactly 50 examples)
-      (train, test)     = splitTrainTest 25 snd binaryData 
+      (train, test)     = splitTrainTest 25 snd binaryData
       ps = RDA.rda model zeroBits train
   in  accuracy (f $ last ps) test
   where
@@ -95,7 +97,6 @@ runExperiment dataset labeller =
 
 main = do
   let path = "./data/iris.data"
-  --putStrLn $ "loading iris data from " ++ path
   dataset <- either quit toList <$> loadData path
   let twoClass = filter (\(_,_,_,_,y) -> y /= Virginica) dataset
 
@@ -110,8 +111,16 @@ main = do
   return ()
   where quit err = error $ "failed to load data: " ++ err
 
--- NOTE: we use `rd' to brute-force compute the reverse derivative here, but a
--- more efficient alternative is available in the RDA library.
+-- | We implement `eval` slightly differently to the RDA library, so parameters
+-- learned from the following model will be permuted with respect to @RDA.eval@.
+--
+-- >  θ → ----------------------\
+-- >                           mul --- repeated @b add --- → y
+-- >  x → --- basis -- copyN ---/
+--
 evalModel :: forall a b . (RDA.KnownNat a, RDA.KnownNat b) => (b*2^a + a) :-> b
-evalModel = fwd :-> rd fwd -- reverseEval @a @b
-  where fwd = uncurry (eval @a @b) . split
+evalModel = identity
+  `chain` (identity @(2^a * b) `tensor` basis @a)
+  `chain` (identity @(2^a * b) `tensor` copyN @(2^a) @b)
+  `chain` multiply @(2^a * b)
+  `chain` repeated @b (addN @1 @(2^a))
