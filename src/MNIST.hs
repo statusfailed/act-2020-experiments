@@ -97,7 +97,7 @@ keepMaxBy score = scanl1 f . fmap (\x -> (x, score x))
 -- NOTE: n is a hyperparameter essentially saying what ratio of output popcount
 -- to mask popcount we should look for.
 pseudoLinear :: forall a . KnownNat a => Int -> (a + a) :-> 1
-pseudoLinear n = fwd :-> rd fwd
+pseudoLinear n = fwd :-> rdiffB fwd
   where
     fwd v =
       let (p, x) = split @a @a v
