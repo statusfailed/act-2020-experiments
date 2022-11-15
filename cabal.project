@@ -8,4 +8,4 @@ source-repository-package
 source-repository-package
   type:     git
   location: git@github.com:statusfailed/rda.git
-  tag:      e32cf9c5375658523e3c51ff58bffe646b2313c7
+  tag:      75d79c1ac1854531522a463ae83ae9db50e7a3e1
